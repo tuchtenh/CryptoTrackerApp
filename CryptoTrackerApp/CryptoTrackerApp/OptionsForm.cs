@@ -33,6 +33,11 @@ namespace CryptoTrackerApp
             button1.Enabled = false;
         }
 
+        private async void LoadDataToDataGridView()
+        {
+            allCurrenciesList = await FetchCryptoData();
+            dataGridView1.DataSource = allCurrenciesList;
+        }
 
         private async Task<List<CryptoCurrency>> FetchCryptoData()
         {
@@ -50,12 +55,6 @@ namespace CryptoTrackerApp
             }
         }
 
-        private async void LoadDataToDataGridView()
-        {
-            allCurrenciesList = await FetchCryptoData();
-            dataGridView1.DataSource = allCurrenciesList;
-        }
-
         // Save
         private void button1_Click(object sender, EventArgs e)
         {
@@ -67,7 +66,7 @@ namespace CryptoTrackerApp
                 listsChanged = false;
                 button1.Enabled = false;
             }
-            var confirmResult = MessageBox.Show("Data saved", "Saved", MessageBoxButtons.OK);
+            MessageBox.Show("Data saved", "Saved", MessageBoxButtons.OK);
         }
 
         // Close
@@ -130,6 +129,7 @@ namespace CryptoTrackerApp
             }
         }
 
+        // <--
         private void button5_Click(object sender, EventArgs e)
         {
             RemoveSelectedRow(dataGridView2, dataGridView1);
@@ -159,37 +159,7 @@ namespace CryptoTrackerApp
                 destination.DataSource = allCurrenciesList;
             }
         }
-        private void dataGridView2_CellContentClick(object sender, DataGridViewCellEventArgs e)
-        {
-            try
-            {
-                Console.WriteLine("\nNo Exception");
-            }
-            catch (Exception ex)
-            {
-                Console.WriteLine("\nException Caught!");
-                Console.WriteLine("Message :{0} ", ex.Message);
-            }
-        }
 
-        private void dataGridView1_CellContentClick(object sender, DataGridViewCellEventArgs e)
-        {
-            try
-            {
-                Console.WriteLine("\nNo Exception");
-            }
-            catch (Exception ex)
-            {
-                Console.WriteLine("\nException Caught!");
-                Console.WriteLine("Message :{0} ", ex.Message);
-            }
-        }
-
-        private void OptionsForm_Load(object sender, EventArgs e)
-        {
-
-        }
-       
         private List<CryptoCurrency> LoadList(string filePath, List<CryptoCurrency> cryptos)
         {
             if (File.Exists(filePath))
@@ -209,6 +179,11 @@ namespace CryptoTrackerApp
                 }
             }
             return cryptos;
+        }
+
+        private void OptionsForm_Load(object sender, EventArgs e)
+        {
+
         }
 
     }
