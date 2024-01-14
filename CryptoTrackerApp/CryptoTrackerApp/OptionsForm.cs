@@ -1,9 +1,11 @@
 ﻿using Newtonsoft.Json;
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
 using System.Drawing;
+using System.IO;
 using System.Linq;
 using System.Net.Http;
 using System.Text;
@@ -16,17 +18,21 @@ namespace CryptoTrackerApp
 {
     public partial class OptionsForm : Form
     {
+        private List<CryptoCurrency> allCurrenciesList = new List<CryptoCurrency>();
+        private List<CryptoCurrency> favouriteCurrenciesList = new List<CryptoCurrency>();
+        private bool listsChanged;
+
         public OptionsForm()
         {
             InitializeComponent();
-            dataGridView1.DataSource = new List<Form1.CryptoCurrency>();
-            dataGridView2.DataSource = new List<Form1.CryptoCurrency>();
+            allCurrenciesList = LoadList("allCurrenciesList.json", allCurrenciesList);
+            favouriteCurrenciesList = LoadList("favouriteCurrenciesList.json", favouriteCurrenciesList);
+            dataGridView1.DataSource = allCurrenciesList;
+            dataGridView2.DataSource = favouriteCurrenciesList;
+            listsChanged = false;
+            button1.Enabled = false;
         }
 
-        private void checkedListBox1_SelectedIndexChanged(object sender, EventArgs e)
-        {
-
-        }
 
         private async Task<List<CryptoCurrency>> FetchCryptoData()
         {
@@ -46,20 +52,39 @@ namespace CryptoTrackerApp
 
         private async void LoadDataToDataGridView()
         {
-            var cryptoData = await FetchCryptoData();
-            dataGridView1.DataSource = cryptoData;
+            allCurrenciesList = await FetchCryptoData();
+            dataGridView1.DataSource = allCurrenciesList;
         }
 
         // Save
         private void button1_Click(object sender, EventArgs e)
         {
-
+            if (listsChanged) {
+                string json = JsonConvert.SerializeObject(favouriteCurrenciesList, Formatting.Indented);
+                File.WriteAllText("favouriteCurrenciesList.json", json);
+                json = JsonConvert.SerializeObject(allCurrenciesList, Formatting.Indented);
+                File.WriteAllText("allCurrenciesList.json", json);
+                listsChanged = false;
+                button1.Enabled = false;
+            }
+            var confirmResult = MessageBox.Show("Data saved", "Saved", MessageBoxButtons.OK);
         }
 
         // Close
         private void button2_Click(object sender, EventArgs e)
         {
-            this.Close();
+            if (listsChanged)
+            {
+                var confirmResult = MessageBox.Show("Are you sure you want to close without saving?", "Close", MessageBoxButtons.YesNo);
+                if(confirmResult == DialogResult.Yes)
+                {
+                    this.Close();
+                }
+            } else
+            {
+                this.Close();
+            }
+            
         }
 
         // Reset
@@ -69,23 +94,122 @@ namespace CryptoTrackerApp
             if (confirmResult == DialogResult.OK)
             {
                 LoadDataToDataGridView();
+                listsChanged = true;
+                button1.Enabled = true;
             }
         }
 
-        // Add/Remove
+        // -->
         private void button4_Click(object sender, EventArgs e)
         {
-            MoveSelectedRow(dataGridView1, dataGridView2);
+            AddSelectedRow(dataGridView1, dataGridView2);
+            listsChanged = true;
+            button1.Enabled = true;
         }
 
-        private void MoveSelectedRow(DataGridView source, DataGridView destination)
+        private void AddSelectedRow(DataGridView source, DataGridView destination)
         {
-            if(source.CurrentRow != null)
+            if (source.CurrentRow != null)
             {
-                DataGridViewRow selectedRow = source.CurrentRow;
-                destination.Rows.Add(selectedRow.Clone());
-
+                foreach(DataGridViewRow row in source.SelectedRows)
+                {
+                    CryptoCurrency crypto = row.DataBoundItem as CryptoCurrency;
+                    if (crypto != null)
+                    {
+                        allCurrenciesList.Remove(crypto);
+                        if (!favouriteCurrenciesList.Any(c => c.Id == crypto.Id))
+                        {
+                            favouriteCurrenciesList.Add(crypto);
+                        }
+                    }
+                }
+                source.DataSource = new List<CryptoCurrency>();;
+                destination.DataSource = new List<CryptoCurrency>();;
+                source.DataSource = allCurrenciesList;
+                destination.DataSource = favouriteCurrenciesList;
             }
         }
+
+        private void button5_Click(object sender, EventArgs e)
+        {
+            RemoveSelectedRow(dataGridView2, dataGridView1);
+            listsChanged = true;
+            button1.Enabled = true;
+        }
+
+        private void RemoveSelectedRow(DataGridView source, DataGridView destination)
+        {
+            if (source.CurrentRow != null)
+            {
+                foreach (DataGridViewRow row in source.SelectedRows)
+                {
+                    CryptoCurrency crypto = row.DataBoundItem as CryptoCurrency;
+                    if (crypto != null)
+                    {
+                        favouriteCurrenciesList.Remove(crypto);
+                        if (!allCurrenciesList.Any(c => c.Id == crypto.Id))
+                        {
+                            allCurrenciesList.Add(crypto);
+                        }
+                    }
+                }
+                source.DataSource = new List<CryptoCurrency>(); ;
+                destination.DataSource = new List<CryptoCurrency>(); ;
+                source.DataSource = favouriteCurrenciesList;
+                destination.DataSource = allCurrenciesList;
+            }
+        }
+        private void dataGridView2_CellContentClick(object sender, DataGridViewCellEventArgs e)
+        {
+            try
+            {
+                Console.WriteLine("\nNo Exception");
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine("\nException Caught!");
+                Console.WriteLine("Message :{0} ", ex.Message);
+            }
+        }
+
+        private void dataGridView1_CellContentClick(object sender, DataGridViewCellEventArgs e)
+        {
+            try
+            {
+                Console.WriteLine("\nNo Exception");
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine("\nException Caught!");
+                Console.WriteLine("Message :{0} ", ex.Message);
+            }
+        }
+
+        private void OptionsForm_Load(object sender, EventArgs e)
+        {
+
+        }
+       
+        private List<CryptoCurrency> LoadList(string filePath, List<CryptoCurrency> cryptos)
+        {
+            if (File.Exists(filePath))
+            {
+                try
+                {
+                    using (StreamReader r = new StreamReader(filePath))
+                    {
+                        string json = File.ReadAllText(filePath);
+                        cryptos = JsonConvert.DeserializeObject<List<CryptoCurrency>>(json);
+                    }
+
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine("Error reading or deserializing the file: " + ex.Message);
+                }
+            }
+            return cryptos;
+        }
+
     }
 }

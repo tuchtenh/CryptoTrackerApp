@@ -17,6 +17,25 @@ namespace CryptoTrackerApp
     public partial class Form1 : Form
     {
 
+        /*
+        public List<CryptoCurrency> GetAllCurrenciesList()
+        {
+            return allCurrenciesList;
+        }
+        public List<CryptoCurrency> GetFavouriteCurrenciesList()
+        {
+            return favouriteCurrenciesList;
+        }
+        public void SetAllCurrenciesList(List<CryptoCurrency> currenciesList)
+        {
+            allCurrenciesList = currenciesList;
+        }
+        public void SetFavouriteCurrenciesList(List<CryptoCurrency> currenciesList)
+        {
+            favouriteCurrenciesList = currenciesList;
+        }
+        */
+
         public Form1()
         {
             InitializeComponent();
