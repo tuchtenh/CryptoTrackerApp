@@ -67,9 +67,9 @@ namespace CryptoTrackerApp
 
         private async Task<Dictionary<string, PriceAPIResponse>> FetchCryptoPriceAPI()
         {
-            string ids = string.Join(",", favouriteCurrenciesList.Select(c => c.Id));
+            string ids = string.Join("%2C", favouriteCurrenciesList.Select(c => c.Id));
             string currency = "usd";
-            string url = $"simple/price?ids={ids}&vs_currencies={currency}&include_24hr_change=true&precision=2";
+            string url = $"simple/price?ids={ids}&vs_currencies={currency}&include_24hr_change=true&precision=8";
             try
             {
                 var response = await HttpClientInstance.Client.GetStringAsync(url);
@@ -170,12 +170,6 @@ namespace CryptoTrackerApp
                 }
             }
             return cryptos;
-        }
-
-
-        private void Form1_Load(object sender, EventArgs e)
-        {
-
         }
 
     }
