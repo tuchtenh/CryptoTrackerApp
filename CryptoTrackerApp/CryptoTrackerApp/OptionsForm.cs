@@ -25,6 +25,7 @@ namespace CryptoTrackerApp
         public OptionsForm()
         {
             InitializeComponent();
+            this.FormClosing += new FormClosingEventHandler(OptionsForm_FormClosing);
             allCurrenciesList = LoadList("allCurrenciesList.json", allCurrenciesList);
             favouriteCurrenciesList = LoadList("favouriteCurrenciesList.json", favouriteCurrenciesList);
             dataGridView1.DataSource = allCurrenciesList;
@@ -72,18 +73,21 @@ namespace CryptoTrackerApp
         // Close
         private void button2_Click(object sender, EventArgs e)
         {
+            this.Close();
+        }
+
+        private void OptionsForm_FormClosing(object sender, FormClosingEventArgs e)
+        {
             if (listsChanged)
             {
                 var confirmResult = MessageBox.Show("Are you sure you want to close without saving?", "Close", MessageBoxButtons.YesNo);
-                if(confirmResult == DialogResult.Yes)
-                {
-                    this.Close();
-                }
-            } else
-            {
-                this.Close();
+                _ = (confirmResult == DialogResult.Yes) ? (e.Cancel = false) : (e.Cancel = true);
             }
-            
+            else
+            {
+                e.Cancel = false;
+            }
+
         }
 
         // Reset
@@ -186,5 +190,16 @@ namespace CryptoTrackerApp
 
         }
 
+        private void button6_Click(object sender, EventArgs e)
+        {
+            AdvancedForm advancedForm = new AdvancedForm();
+            advancedForm.FormClosing += new FormClosingEventHandler(this.AdvancedForm_FormClosing);
+            advancedForm.ShowDialog();
+        }
+
+        private void AdvancedForm_FormClosing(object sender, FormClosingEventArgs e)
+        {
+            Console.WriteLine("Exit Advamced");
+        }
     }
 }
