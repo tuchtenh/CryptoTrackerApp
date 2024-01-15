@@ -172,5 +172,11 @@ namespace CryptoTrackerApp
             return cryptos;
         }
 
+        private void button3_Click(object sender, EventArgs e)
+        {
+            ChartForm chartForm = new ChartForm();
+            //chartForm.FormClosing += new FormClosingEventHandler(this.ChartForm_FormClosing);
+            chartForm.ShowDialog();
+        }
     }
 }
