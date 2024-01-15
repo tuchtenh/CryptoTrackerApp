@@ -114,6 +114,8 @@
             this.Controls.Add(this.label1);
             this.Controls.Add(this.trackBar1);
             this.Controls.Add(this.comboBox1);
+            this.MaximumSize = new System.Drawing.Size(366, 293);
+            this.MinimumSize = new System.Drawing.Size(366, 293);
             this.Name = "AdvancedForm";
             this.Text = "Advanced";
             ((System.ComponentModel.ISupportInitialize)(this.trackBar1)).EndInit();

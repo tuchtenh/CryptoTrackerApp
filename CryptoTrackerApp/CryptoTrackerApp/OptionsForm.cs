@@ -185,10 +185,6 @@ namespace CryptoTrackerApp
             return cryptos;
         }
 
-        private void OptionsForm_Load(object sender, EventArgs e)
-        {
-
-        }
 
         private void button6_Click(object sender, EventArgs e)
         {

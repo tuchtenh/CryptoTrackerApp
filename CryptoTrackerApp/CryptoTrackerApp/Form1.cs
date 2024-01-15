@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
+using System.Diagnostics;
 using System.Drawing;
 using System.IO;
 using System.Linq;
@@ -24,7 +25,6 @@ namespace CryptoTrackerApp
         {
             InitializeComponent();
             favouriteCurrenciesList = LoadFavourites();
-            dataGridView2.DataSource = favouriteCurrenciesList;
             if(favouriteCurrenciesList.Count > 0)
             {
                 UpdateCryptoPriceAPI();
@@ -54,7 +54,7 @@ namespace CryptoTrackerApp
                 if (cryptoResponse.TryGetValue(favCurrency.Id, out var priceApiResponse))
                 {
                     pricedCoin.Price = priceApiResponse.Price;
-                    pricedCoin.Change = priceApiResponse.Change;
+                    pricedCoin.PercentageChange24Hr = priceApiResponse.Change;
                 }
                 if (!currencyPriceList.Any(c => c.Id == pricedCoin.Id))
                 {
@@ -69,7 +69,7 @@ namespace CryptoTrackerApp
         {
             string ids = string.Join(",", favouriteCurrenciesList.Select(c => c.Id));
             string currency = "usd";
-            string url = $"simple/price?ids={ids}&vs_currencies={currency}&include_24hr_change=true&precision=full";
+            string url = $"simple/price?ids={ids}&vs_currencies={currency}&include_24hr_change=true&precision=2";
             try
             {
                 var response = await HttpClientInstance.Client.GetStringAsync(url);
@@ -115,7 +115,7 @@ namespace CryptoTrackerApp
         private void OptionsForm_FormClosing(object sender, FormClosingEventArgs e)
         {
             favouriteCurrenciesList = LoadFavourites();
-            dataGridView2.DataSource = favouriteCurrenciesList;
+            UpdateCryptoPriceAPI();
         }
 
 
@@ -141,7 +141,13 @@ namespace CryptoTrackerApp
             public string Id { get; set; }
             public string Name { get; set; }
             public double? Price { get; set; }
-            public double? Change { get; set; }
+
+            private double? change;
+            public double? PercentageChange24Hr
+            {
+                get => change;
+                set => change = value.HasValue ? Math.Round(value.Value, 2) : (double?)null;
+            }
         }
 
         private List<CryptoCurrency> LoadFavourites()
