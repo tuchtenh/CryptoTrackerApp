@@ -24,6 +24,7 @@ namespace CryptoTrackerApp
         public Form1()
         {
             InitializeComponent();
+            this.FormClosing += new FormClosingEventHandler(Form1_FormClosing);
             favouriteCurrenciesList = LoadFavourites();
             if(favouriteCurrenciesList.Count > 0)
             {
@@ -146,7 +147,7 @@ namespace CryptoTrackerApp
             public double? PercentageChange24Hr
             {
                 get => change;
-                set => change = value.HasValue ? Math.Round(value.Value, 2) : (double?)null;
+                set => change = (value.HasValue) ? (Math.Round(value.Value, 2)) : ((double?)null);
             }
         }
 
@@ -175,8 +176,12 @@ namespace CryptoTrackerApp
         private void button3_Click(object sender, EventArgs e)
         {
             ChartForm chartForm = new ChartForm();
-            //chartForm.FormClosing += new FormClosingEventHandler(this.ChartForm_FormClosing);
             chartForm.ShowDialog();
+        }
+        private void Form1_FormClosing(object sender, FormClosingEventArgs e)
+        {
+            var confirmResult = MessageBox.Show("Are you sure you want to close the application?", "Close", MessageBoxButtons.YesNo);
+            _ = (confirmResult == DialogResult.Yes) ? (e.Cancel = false) : (e.Cancel = true);
         }
     }
 }
