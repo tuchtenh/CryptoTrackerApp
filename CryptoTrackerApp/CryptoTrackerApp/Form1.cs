@@ -20,14 +20,16 @@ namespace CryptoTrackerApp
     public partial class Form1 : Form
     {
         private List<CryptoCurrency> favouriteCurrenciesList = new List<CryptoCurrency>();
-        private List<CryptoPrice> currencyPriceList = new List<CryptoPrice>();
+        private BindingList<CryptoPrice> currencyPriceList = new BindingList<CryptoPrice>();
 
         public Form1()
         {
             InitializeComponent();
             this.FormClosing += new FormClosingEventHandler(Form1_FormClosing);
             favouriteCurrenciesList = LoadFavourites();
-            if(favouriteCurrenciesList.Count > 0)
+            dataGridView1.AllowUserToAddRows = false;
+            dataGridView1.DataSource = currencyPriceList;
+            if (favouriteCurrenciesList.Count > 0)
             {
                 UpdateCryptoPriceAPI();
             }
@@ -41,7 +43,8 @@ namespace CryptoTrackerApp
 
         private async void UpdateCryptoPriceAPI()
         {
-            currencyPriceList = new List<CryptoPrice>();
+            //currencyPriceList = new List<CryptoPrice>();
+
             Dictionary<string, PriceAPIResponse> cryptoResponse = new Dictionary<string, PriceAPIResponse>();
             cryptoResponse = await FetchCryptoPriceAPI();
 
@@ -64,7 +67,7 @@ namespace CryptoTrackerApp
                 }
                 
             }
-            dataGridView1.DataSource = currencyPriceList;
+            dataGridView1.Refresh();
         }
 
         private async Task<Dictionary<string, PriceAPIResponse>> FetchCryptoPriceAPI()

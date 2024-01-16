@@ -18,8 +18,8 @@ namespace CryptoTrackerApp
 {
     public partial class OptionsForm : Form
     {
-        private List<CryptoCurrency> allCurrenciesList = new List<CryptoCurrency>();
-        private List<CryptoCurrency> favouriteCurrenciesList = new List<CryptoCurrency>();
+        private BindingList<CryptoCurrency> allCurrenciesList = new BindingList<CryptoCurrency>();
+        private BindingList<CryptoCurrency> favouriteCurrenciesList = new BindingList<CryptoCurrency>();
         private bool listsChanged;
 
         public OptionsForm()
@@ -28,6 +28,8 @@ namespace CryptoTrackerApp
             this.FormClosing += new FormClosingEventHandler(OptionsForm_FormClosing);
             allCurrenciesList = LoadList("allCurrenciesList.json", allCurrenciesList);
             favouriteCurrenciesList = LoadList("favouriteCurrenciesList.json", favouriteCurrenciesList);
+            dataGridView1.AllowUserToAddRows = false;
+            dataGridView2.AllowUserToAddRows = false;
             dataGridView1.DataSource = allCurrenciesList;
             dataGridView2.DataSource = favouriteCurrenciesList;
             listsChanged = false;
@@ -40,12 +42,12 @@ namespace CryptoTrackerApp
             dataGridView1.DataSource = allCurrenciesList;
         }
 
-        private async Task<List<CryptoCurrency>> FetchCryptoData()
+        private async Task<BindingList<CryptoCurrency>> FetchCryptoData()
         {
             try
             {
                 var response = await HttpClientInstance.Client.GetStringAsync("coins/list?include_platform=false");
-                var cryptos = JsonConvert.DeserializeObject<List<CryptoCurrency>>(response);
+                var cryptos = JsonConvert.DeserializeObject<BindingList<CryptoCurrency>>(response);
                 return cryptos;
             }
             catch (HttpRequestException ex)
@@ -54,12 +56,12 @@ namespace CryptoTrackerApp
                 {
                     MessageBox.Show("Too many request. Try again later");
                     Console.WriteLine("\nException Caught!\nMessage :{0} ", ex.Message);
-                    return new List<CryptoCurrency>();
+                    return new BindingList<CryptoCurrency>();
                 }
                 else
                 {
                     Console.WriteLine("\nException Caught!\nMessage :{0} ", ex.Message);
-                    return new List<CryptoCurrency>();
+                    return new BindingList<CryptoCurrency>();
                 }                
             }
         }
@@ -134,10 +136,8 @@ namespace CryptoTrackerApp
                         }
                     }
                 }
-                source.DataSource = new List<CryptoCurrency>();;
-                destination.DataSource = new List<CryptoCurrency>();;
-                source.DataSource = allCurrenciesList;
-                destination.DataSource = favouriteCurrenciesList;
+                source.Refresh();
+                destination.Refresh();
             }
         }
 
@@ -165,14 +165,12 @@ namespace CryptoTrackerApp
                         }
                     }
                 }
-                source.DataSource = new List<CryptoCurrency>(); ;
-                destination.DataSource = new List<CryptoCurrency>(); ;
-                source.DataSource = favouriteCurrenciesList;
-                destination.DataSource = allCurrenciesList;
+                source.Refresh();
+                destination.Refresh();
             }
         }
 
-        private List<CryptoCurrency> LoadList(string filePath, List<CryptoCurrency> cryptos)
+        private BindingList<CryptoCurrency> LoadList(string filePath, BindingList<CryptoCurrency> cryptos)
         {
             if (File.Exists(filePath))
             {
@@ -181,7 +179,7 @@ namespace CryptoTrackerApp
                     using (StreamReader r = new StreamReader(filePath))
                     {
                         string json = File.ReadAllText(filePath);
-                        cryptos = JsonConvert.DeserializeObject<List<CryptoCurrency>>(json);
+                        cryptos = JsonConvert.DeserializeObject<BindingList<CryptoCurrency>>(json);
                     }
 
                 }
