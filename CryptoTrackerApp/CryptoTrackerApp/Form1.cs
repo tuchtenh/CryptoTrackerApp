@@ -1,4 +1,5 @@
 ﻿using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -79,33 +80,19 @@ namespace CryptoTrackerApp
             }
             catch (HttpRequestException ex)
             {
-                Console.WriteLine("\nException Caught!");
-                Console.WriteLine("Message :{0} ", ex.Message);
-                return new Dictionary<string, PriceAPIResponse>();
-            }
-        }
-
-        private async Task APIStuff()
-        {
-            try
-            {
-                var responseBody = await HttpClientInstance.Client.GetStringAsync("simple/supported_vs_currencies");
-                await Task.Delay(5000);
-                List<string> currencies = JsonConvert.DeserializeObject<List<string>>(responseBody);
-                foreach (var currency in currencies)
+                if (ex.Message.Contains("429"))
                 {
-                    Console.WriteLine(currency);
+                    MessageBox.Show("Too many request. Try again later");
+                    Console.WriteLine("\nException Caught!\nMessage :{0} ", ex.Message);
+                    return new Dictionary<string, PriceAPIResponse>();
                 }
-                Console.WriteLine(responseBody);
-            }
-            catch (HttpRequestException ex)
-            {
-                Console.WriteLine("\nException Caught!");
-                Console.WriteLine("Message :{0} ", ex.Message);
+                else
+                {
+                    Console.WriteLine("\nException Caught!\nMessage :{0} ", ex.Message);
+                    return new Dictionary<string, PriceAPIResponse>();
+                }
             }
         }
-
-
 
         private void button2_Click(object sender, EventArgs e)
         {
@@ -119,36 +106,13 @@ namespace CryptoTrackerApp
             UpdateCryptoPriceAPI();
         }
 
-
-        public class CryptoCurrency
-        {
-            public string Id { get; set; }
-            public string Symbol { get; set; }
-            public string Name { get; set; }
-        }
-
-        public class PriceAPIResponse
+        private class PriceAPIResponse
         {
             [JsonProperty("usd")]
             public double? Price { get; set; }
 
             [JsonProperty("usd_24h_change")]
             public double? Change { get; set; }
-        }
-
-        private class CryptoPrice
-        {
-
-            public string Id { get; set; }
-            public string Name { get; set; }
-            public double? Price { get; set; }
-
-            private double? change;
-            public double? PercentageChange24Hr
-            {
-                get => change;
-                set => change = (value.HasValue) ? (Math.Round(value.Value, 2)) : ((double?)null);
-            }
         }
 
         private List<CryptoCurrency> LoadFavourites()
@@ -176,6 +140,7 @@ namespace CryptoTrackerApp
         private void button3_Click(object sender, EventArgs e)
         {
             ChartForm chartForm = new ChartForm();
+            chartForm.SetSelectedRow(dataGridView1.SelectedRows[0]);
             chartForm.ShowDialog();
         }
         private void Form1_FormClosing(object sender, FormClosingEventArgs e)

@@ -50,9 +50,17 @@ namespace CryptoTrackerApp
             }
             catch (HttpRequestException ex)
             {
-                Console.WriteLine("\nException Caught!");
-                Console.WriteLine("Message :{0} ", ex.Message);
-                return new List<CryptoCurrency>();
+                if (ex.Message.Contains("429"))
+                {
+                    MessageBox.Show("Too many request. Try again later");
+                    Console.WriteLine("\nException Caught!\nMessage :{0} ", ex.Message);
+                    return new List<CryptoCurrency>();
+                }
+                else
+                {
+                    Console.WriteLine("\nException Caught!\nMessage :{0} ", ex.Message);
+                    return new List<CryptoCurrency>();
+                }                
             }
         }
 

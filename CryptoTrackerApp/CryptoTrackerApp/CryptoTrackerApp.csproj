@@ -147,6 +147,8 @@
     <Compile Include="ChartForm.Designer.cs">
       <DependentUpon>ChartForm.cs</DependentUpon>
     </Compile>
+    <Compile Include="CryptoCurrency.cs" />
+    <Compile Include="CryptoPrice.cs" />
     <Compile Include="Form1.cs">
       <SubType>Form</SubType>
     </Compile>
