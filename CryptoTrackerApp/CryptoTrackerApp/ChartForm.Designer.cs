@@ -82,7 +82,7 @@
             this.button1.TabIndex = 1;
             this.button1.Text = "1 Day";
             this.button1.UseVisualStyleBackColor = true;
-            this.button1.Click += new System.EventHandler(this.button1_Click);
+            this.button1.Click += new System.EventHandler(this.Day1Button_Click);
             // 
             // button2
             // 
@@ -92,7 +92,7 @@
             this.button2.TabIndex = 2;
             this.button2.Text = "3 Day";
             this.button2.UseVisualStyleBackColor = true;
-            this.button2.Click += new System.EventHandler(this.button2_Click);
+            this.button2.Click += new System.EventHandler(this.Day3Button_Click);
             // 
             // button3
             // 
@@ -102,7 +102,7 @@
             this.button3.TabIndex = 3;
             this.button3.Text = "7 Day";
             this.button3.UseVisualStyleBackColor = true;
-            this.button3.Click += new System.EventHandler(this.button3_Click);
+            this.button3.Click += new System.EventHandler(this.Day7Button_Click);
             // 
             // button4
             // 
@@ -112,7 +112,7 @@
             this.button4.TabIndex = 4;
             this.button4.Text = "14 Days";
             this.button4.UseVisualStyleBackColor = true;
-            this.button4.Click += new System.EventHandler(this.button4_Click);
+            this.button4.Click += new System.EventHandler(this.Day14Button_Click);
             // 
             // button5
             // 
@@ -122,7 +122,7 @@
             this.button5.TabIndex = 5;
             this.button5.Text = "30 Days";
             this.button5.UseVisualStyleBackColor = true;
-            this.button5.Click += new System.EventHandler(this.button5_Click);
+            this.button5.Click += new System.EventHandler(this.Day30Button_Click);
             // 
             // button6
             // 
@@ -132,7 +132,7 @@
             this.button6.TabIndex = 6;
             this.button6.Text = "90 Days";
             this.button6.UseVisualStyleBackColor = true;
-            this.button6.Click += new System.EventHandler(this.button6_Click);
+            this.button6.Click += new System.EventHandler(this.Day90Button_Click);
             // 
             // button7
             // 
@@ -142,7 +142,7 @@
             this.button7.TabIndex = 7;
             this.button7.Text = "Close";
             this.button7.UseVisualStyleBackColor = true;
-            this.button7.Click += new System.EventHandler(this.button7_Click);
+            this.button7.Click += new System.EventHandler(this.CloseButton_Click);
             // 
             // button8
             // 
@@ -152,7 +152,7 @@
             this.button8.TabIndex = 8;
             this.button8.Text = "Export";
             this.button8.UseVisualStyleBackColor = true;
-            this.button8.Click += new System.EventHandler(this.button8_Click);
+            this.button8.Click += new System.EventHandler(this.ExportButton_Click);
             // 
             // ChartForm
             // 

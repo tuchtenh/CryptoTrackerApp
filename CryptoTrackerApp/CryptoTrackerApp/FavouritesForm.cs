@@ -17,13 +17,13 @@ using static CryptoTrackerApp.Program;
 
 namespace CryptoTrackerApp
 {
-    public partial class OptionsForm : Form
+    public partial class FavouritesForm : Form
     {
         private BindingList<CryptoCurrency> allCurrenciesList = new BindingList<CryptoCurrency>();
         private BindingList<CryptoCurrency> favouriteCurrenciesList = new BindingList<CryptoCurrency>();
         private bool listsChanged;
 
-        public OptionsForm()
+        public FavouritesForm()
         {
             InitializeComponent();
             this.FormClosing += new FormClosingEventHandler(OptionsForm_FormClosing);
@@ -68,7 +68,7 @@ namespace CryptoTrackerApp
         }
 
         // Save
-        private void button1_Click(object sender, EventArgs e)
+        private void SaveButton_Click(object sender, EventArgs e)
         {
             if (listsChanged) {
                 string json = JsonConvert.SerializeObject(favouriteCurrenciesList, Formatting.Indented);
@@ -82,7 +82,7 @@ namespace CryptoTrackerApp
         }
 
         // Close
-        private void button2_Click(object sender, EventArgs e)
+        private void CloseButton_Click(object sender, EventArgs e)
         {
             this.Close();
         }
@@ -102,7 +102,7 @@ namespace CryptoTrackerApp
         }
 
         // Reset
-        private void button3_Click(object sender, EventArgs e)
+        private void ResetButton_Click(object sender, EventArgs e)
         {
             var confirmResult = MessageBox.Show("Reset?","Reset",MessageBoxButtons.OKCancel);
             if (confirmResult == DialogResult.OK)
@@ -114,7 +114,7 @@ namespace CryptoTrackerApp
         }
 
         // -->
-        private void button4_Click(object sender, EventArgs e)
+        private void AddToFavouritesButton_Click(object sender, EventArgs e)
         {
             AddSelectedRow(dataGridView1, dataGridView2);
             listsChanged = true;
@@ -143,7 +143,7 @@ namespace CryptoTrackerApp
         }
 
         // <--
-        private void button5_Click(object sender, EventArgs e)
+        private void RemoveFromFavouritesButton_Click(object sender, EventArgs e)
         {
             RemoveSelectedRow(dataGridView2, dataGridView1);
             listsChanged = true;
@@ -193,7 +193,7 @@ namespace CryptoTrackerApp
         }
 
 
-        private void button6_Click(object sender, EventArgs e)
+        private void AdvancedButton_Click(object sender, EventArgs e)
         {
             AdvancedForm advancedForm = new AdvancedForm();
             advancedForm.FormClosing += new FormClosingEventHandler(this.AdvancedForm_FormClosing);

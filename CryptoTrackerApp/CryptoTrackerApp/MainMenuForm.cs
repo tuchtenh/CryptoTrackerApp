@@ -25,7 +25,7 @@ namespace CryptoTrackerApp
         public MainMenuForm()
         {
             InitializeComponent();
-            this.FormClosing += new FormClosingEventHandler(Form1_FormClosing);
+            this.FormClosing += new FormClosingEventHandler(MainMenuForm_FormClosing);
             favouriteCurrenciesList = LoadFavourites();
             dataGridView1.AllowUserToAddRows = false;
             dataGridView1.DataSource = currencyPriceList;
@@ -36,7 +36,7 @@ namespace CryptoTrackerApp
         }
 
         // Refresh
-        private void button1_Click(object sender, EventArgs e)
+        private void RefreshButton_Click(object sender, EventArgs e)
         {
             UpdateCryptoPriceAPI();
         }
@@ -97,13 +97,13 @@ namespace CryptoTrackerApp
             }
         }
 
-        private void button2_Click(object sender, EventArgs e)
+        private void FavouritesButton_Click(object sender, EventArgs e)
         {
-            OptionsForm optionsForm = new OptionsForm();
-            optionsForm.FormClosing += new FormClosingEventHandler(this.OptionsForm_FormClosing);
-            optionsForm.ShowDialog();
+            FavouritesForm favouritesForm = new FavouritesForm();
+            favouritesForm.FormClosing += new FormClosingEventHandler(this.FavouritesForm_FormClosing);
+            favouritesForm.ShowDialog();
         }
-        private void OptionsForm_FormClosing(object sender, FormClosingEventArgs e)
+        private void FavouritesForm_FormClosing(object sender, FormClosingEventArgs e)
         {
             favouriteCurrenciesList = LoadFavourites();
             UpdateCryptoPriceAPI();
@@ -140,13 +140,13 @@ namespace CryptoTrackerApp
             return cryptos;
         }
 
-        private void button3_Click(object sender, EventArgs e)
+        private void ChartButton_Click(object sender, EventArgs e)
         {
             ChartForm chartForm = new ChartForm();
             chartForm.SetSelectedRow(dataGridView1.SelectedRows[0]);
             chartForm.ShowDialog();
         }
-        private void Form1_FormClosing(object sender, FormClosingEventArgs e)
+        private void MainMenuForm_FormClosing(object sender, FormClosingEventArgs e)
         {
             var confirmResult = MessageBox.Show("Are you sure you want to close the application?", "Close", MessageBoxButtons.YesNo);
             _ = (confirmResult == DialogResult.Yes) ? (e.Cancel = false) : (e.Cancel = true);

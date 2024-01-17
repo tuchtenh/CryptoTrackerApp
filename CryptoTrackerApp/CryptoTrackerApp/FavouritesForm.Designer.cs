@@ -3,7 +3,7 @@ using System.Windows.Forms;
 
 namespace CryptoTrackerApp
 {
-    partial class OptionsForm
+    partial class FavouritesForm
     {
         /// <summary>
         /// Required designer variable.
@@ -54,7 +54,7 @@ namespace CryptoTrackerApp
             this.button1.TabIndex = 1;
             this.button1.Text = "Save";
             this.button1.UseVisualStyleBackColor = true;
-            this.button1.Click += new System.EventHandler(this.button1_Click);
+            this.button1.Click += new System.EventHandler(this.SaveButton_Click);
             // 
             // button2
             // 
@@ -65,7 +65,7 @@ namespace CryptoTrackerApp
             this.button2.TabIndex = 2;
             this.button2.Text = "Close";
             this.button2.UseVisualStyleBackColor = true;
-            this.button2.Click += new System.EventHandler(this.button2_Click);
+            this.button2.Click += new System.EventHandler(this.CloseButton_Click);
             // 
             // dataGridView1
             // 
@@ -89,7 +89,7 @@ namespace CryptoTrackerApp
             this.button3.TabIndex = 5;
             this.button3.Text = "Reset";
             this.button3.UseVisualStyleBackColor = true;
-            this.button3.Click += new System.EventHandler(this.button3_Click);
+            this.button3.Click += new System.EventHandler(this.ResetButton_Click);
             // 
             // dataGridView2
             // 
@@ -113,7 +113,7 @@ namespace CryptoTrackerApp
             this.button4.TabIndex = 7;
             this.button4.Text = "-->";
             this.button4.UseVisualStyleBackColor = true;
-            this.button4.Click += new System.EventHandler(this.button4_Click);
+            this.button4.Click += new System.EventHandler(this.AddToFavouritesButton_Click);
             // 
             // label1
             // 
@@ -142,7 +142,7 @@ namespace CryptoTrackerApp
             this.button5.TabIndex = 10;
             this.button5.Text = "<--";
             this.button5.UseVisualStyleBackColor = true;
-            this.button5.Click += new System.EventHandler(this.button5_Click);
+            this.button5.Click += new System.EventHandler(this.RemoveFromFavouritesButton_Click);
             // 
             // button6
             // 
@@ -153,7 +153,7 @@ namespace CryptoTrackerApp
             this.button6.TabIndex = 11;
             this.button6.Text = "Advanced";
             this.button6.UseVisualStyleBackColor = true;
-            this.button6.Click += new System.EventHandler(this.button6_Click);
+            this.button6.Click += new System.EventHandler(this.AdvancedButton_Click);
             // 
             // OptionsForm
             // 

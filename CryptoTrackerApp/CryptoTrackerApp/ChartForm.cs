@@ -86,12 +86,12 @@ namespace CryptoTrackerApp
             Draw24HourChart();
         }
 
-        private void button7_Click(object sender, EventArgs e)
+        private void CloseButton_Click(object sender, EventArgs e)
         {
             this.Close();
         }
 
-        private void button8_Click(object sender, EventArgs e)
+        private void ExportButton_Click(object sender, EventArgs e)
         {
             using (SaveFileDialog saveFileDialog = new SaveFileDialog())
             {
@@ -152,12 +152,12 @@ namespace CryptoTrackerApp
             chart1.ChartAreas[0].AxisX.LabelStyle.Format = "HH:mm:ss";
             DrawChart(cryptocurrencyData.Id, 1);
         }
-        private void button1_Click(object sender, EventArgs e)
+        private void Day1Button_Click(object sender, EventArgs e)
         {
             Draw24HourChart();
         }
 
-        private void button2_Click(object sender, EventArgs e)
+        private void Day3Button_Click(object sender, EventArgs e)
         {
 
             chart1.Titles[0].Text = $"3 Day {cryptocurrencyData.Name} price history in USD";
@@ -168,7 +168,7 @@ namespace CryptoTrackerApp
             DrawChart(cryptocurrencyData.Id, 3);
         }
 
-        private void button3_Click(object sender, EventArgs e)
+        private void Day7Button_Click(object sender, EventArgs e)
         {
 
             chart1.Titles[0].Text = $"7 Day {cryptocurrencyData.Name} price history in USD";
@@ -179,7 +179,7 @@ namespace CryptoTrackerApp
             DrawChart(cryptocurrencyData.Id, 7);
         }
 
-        private void button4_Click(object sender, EventArgs e)
+        private void Day14Button_Click(object sender, EventArgs e)
         {
 
             chart1.Titles[0].Text = $"14 Day {cryptocurrencyData.Name} price history in USD";
@@ -190,7 +190,7 @@ namespace CryptoTrackerApp
             DrawChart(cryptocurrencyData.Id, 14);
         }
 
-        private void button5_Click(object sender, EventArgs e)
+        private void Day30Button_Click(object sender, EventArgs e)
         {
 
             chart1.Titles[0].Text = $"30 Day {cryptocurrencyData.Name} price history in USD";
@@ -201,7 +201,7 @@ namespace CryptoTrackerApp
             DrawChart(cryptocurrencyData.Id, 30);
         }
 
-        private void button6_Click(object sender, EventArgs e)
+        private void Day90Button_Click(object sender, EventArgs e)
         {
 
             chart1.Titles[0].Text = $"90 Day {cryptocurrencyData.Name} price history in USD";
