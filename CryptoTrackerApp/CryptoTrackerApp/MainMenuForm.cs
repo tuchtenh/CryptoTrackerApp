@@ -29,6 +29,9 @@ namespace CryptoTrackerApp
             favouriteCurrenciesList = LoadFavourites();
             dataGridView1.AllowUserToAddRows = false;
             dataGridView1.DataSource = currencyPriceList;
+        }
+        private void MainMenuForm_Load(object sender, EventArgs e)
+        {
             if (favouriteCurrenciesList.Count > 0)
             {
                 UpdateCryptoPriceAPI();

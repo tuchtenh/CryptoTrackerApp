@@ -100,6 +100,7 @@
             this.MinimumSize = new System.Drawing.Size(745, 513);
             this.Name = "MainMenuForm";
             this.Text = "CryptoTracker";
+            this.Load += new System.EventHandler(this.MainMenuForm_Load);
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).EndInit();
             this.ResumeLayout(false);
 

@@ -31,6 +31,15 @@ namespace CryptoTrackerApp
             InitializeComponent();
         }
 
+        private void ChartForm_Load(object sender, EventArgs e)
+        {
+            chart1.ChartAreas[0].AxisX.MajorGrid.LineColor = Color.Red;
+            chart1.ChartAreas[0].AxisY.MajorGrid.LineColor = Color.Red;
+            chart1.Series["Series1"].Color = Color.Green;
+            chart1.ChartAreas[0].AxisY.IsStartedFromZero = false;
+            Draw24HourChart();
+        }
+
         public void SetSelectedRow(DataGridViewRow cryptocurrencyData)
         {
             this.cryptocurrencyData = cryptocurrencyData.DataBoundItem as CryptoPrice;
@@ -75,15 +84,6 @@ namespace CryptoTrackerApp
             }
             chart1.ChartAreas[0].RecalculateAxesScale();
             chart1.Invalidate();
-        }
-
-        private void ChartForm_Load(object sender, EventArgs e)
-        {
-            chart1.ChartAreas[0].AxisX.MajorGrid.LineColor = Color.Red;
-            chart1.ChartAreas[0].AxisY.MajorGrid.LineColor = Color.Red;
-            chart1.Series["Series1"].Color = Color.Green;
-            chart1.ChartAreas[0].AxisY.IsStartedFromZero = false;
-            Draw24HourChart();
         }
 
         private void CloseButton_Click(object sender, EventArgs e)
@@ -159,57 +159,37 @@ namespace CryptoTrackerApp
 
         private void Day3Button_Click(object sender, EventArgs e)
         {
-
-            chart1.Titles[0].Text = $"3 Day {cryptocurrencyData.Name} price history in USD";
-            chart1.Series[0].LegendText = $"{cryptocurrencyData.Name}";
-            chart1.ChartAreas[0].AxisX.Interval = 0.5;
-            chart1.ChartAreas[0].AxisX.IntervalType = DateTimeIntervalType.Days;
-            chart1.ChartAreas[0].AxisX.LabelStyle.Format = "dd/MM HH:mm";
-            DrawChart(cryptocurrencyData.Id, 3);
+            ChartSettings(3, 0.5, timeFormat: "dd/MM HH:mm");
         }
 
         private void Day7Button_Click(object sender, EventArgs e)
         {
-
-            chart1.Titles[0].Text = $"7 Day {cryptocurrencyData.Name} price history in USD";
-            chart1.Series[0].LegendText = $"{cryptocurrencyData.Name}";
-            chart1.ChartAreas[0].AxisX.Interval = 1;
-            chart1.ChartAreas[0].AxisX.IntervalType = DateTimeIntervalType.Days;
-            chart1.ChartAreas[0].AxisX.LabelStyle.Format = "dd/MM";
-            DrawChart(cryptocurrencyData.Id, 7);
+            ChartSettings(7, 1);
         }
 
         private void Day14Button_Click(object sender, EventArgs e)
         {
-
-            chart1.Titles[0].Text = $"14 Day {cryptocurrencyData.Name} price history in USD";
-            chart1.Series[0].LegendText = $"{cryptocurrencyData.Name}";
-            chart1.ChartAreas[0].AxisX.Interval = 2;
-            chart1.ChartAreas[0].AxisX.IntervalType = DateTimeIntervalType.Days;
-            chart1.ChartAreas[0].AxisX.LabelStyle.Format = "dd/MM";
-            DrawChart(cryptocurrencyData.Id, 14);
+            ChartSettings(14, 2);
         }
 
         private void Day30Button_Click(object sender, EventArgs e)
         {
-
-            chart1.Titles[0].Text = $"30 Day {cryptocurrencyData.Name} price history in USD";
-            chart1.Series[0].LegendText = $"{cryptocurrencyData.Name}";
-            chart1.ChartAreas[0].AxisX.Interval = 3;
-            chart1.ChartAreas[0].AxisX.IntervalType = DateTimeIntervalType.Days;
-            chart1.ChartAreas[0].AxisX.LabelStyle.Format = "dd/MM";
-            DrawChart(cryptocurrencyData.Id, 30);
+            ChartSettings(30, 3);
         }
 
         private void Day90Button_Click(object sender, EventArgs e)
         {
+            ChartSettings(90, 9);
+        }
 
-            chart1.Titles[0].Text = $"90 Day {cryptocurrencyData.Name} price history in USD";
+        private void ChartSettings(int days, double interval, string timeFormat = "dd/MM")
+        {
+            chart1.Titles[0].Text = $"{days} Day {cryptocurrencyData.Name} price history in USD";
             chart1.Series[0].LegendText = $"{cryptocurrencyData.Name}";
-            chart1.ChartAreas[0].AxisX.Interval = 9;
+            chart1.ChartAreas[0].AxisX.Interval = interval;
             chart1.ChartAreas[0].AxisX.IntervalType = DateTimeIntervalType.Days;
             chart1.ChartAreas[0].AxisX.LabelStyle.Format = "dd/MM";
-            DrawChart(cryptocurrencyData.Id, 90);
+            DrawChart(cryptocurrencyData.Id, days);
         }
     }
 }
