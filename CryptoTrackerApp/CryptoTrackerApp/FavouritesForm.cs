@@ -67,7 +67,6 @@ namespace CryptoTrackerApp
             }
         }
 
-        // Save
         private void SaveButton_Click(object sender, EventArgs e)
         {
             if (listsChanged) {
@@ -81,7 +80,6 @@ namespace CryptoTrackerApp
             MessageBox.Show("Data saved", "Saved", MessageBoxButtons.OK);
         }
 
-        // Close
         private void CloseButton_Click(object sender, EventArgs e)
         {
             this.Close();
@@ -101,7 +99,6 @@ namespace CryptoTrackerApp
 
         }
 
-        // Reset
         private void ResetButton_Click(object sender, EventArgs e)
         {
             var confirmResult = MessageBox.Show("Reset?","Reset",MessageBoxButtons.OKCancel);

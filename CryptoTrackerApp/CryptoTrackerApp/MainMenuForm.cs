@@ -11,6 +11,7 @@ using System.Linq;
 using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
+using System.Timers;
 using System.Windows.Forms;
 using static CryptoTrackerApp.MainMenuForm;
 using static CryptoTrackerApp.Program;
@@ -21,6 +22,8 @@ namespace CryptoTrackerApp
     {
         private List<CryptoCurrency> favouriteCurrenciesList = new List<CryptoCurrency>();
         private BindingList<CryptoPrice> currencyPriceList = new BindingList<CryptoPrice>();
+        private System.Timers.Timer _timer;
+        private int updateInterval = 120 * 1000;
 
         public MainMenuForm()
         {
@@ -29,6 +32,7 @@ namespace CryptoTrackerApp
             favouriteCurrenciesList = LoadFavourites();
             dataGridView1.AllowUserToAddRows = false;
             dataGridView1.DataSource = currencyPriceList;
+            LoadSettings();
         }
         private void MainMenuForm_Load(object sender, EventArgs e)
         {
@@ -36,12 +40,14 @@ namespace CryptoTrackerApp
             {
                 UpdateCryptoPriceAPI();
             }
+            SetupTimer();
         }
 
-        // Refresh
         private void RefreshButton_Click(object sender, EventArgs e)
         {
             UpdateCryptoPriceAPI();
+            _timer.Stop();
+            _timer.Start();
         }
 
         private async void UpdateCryptoPriceAPI()
@@ -102,6 +108,7 @@ namespace CryptoTrackerApp
 
         private void FavouritesButton_Click(object sender, EventArgs e)
         {
+            _timer.Stop();
             FavouritesForm favouritesForm = new FavouritesForm();
             favouritesForm.FormClosing += new FormClosingEventHandler(this.FavouritesForm_FormClosing);
             favouritesForm.ShowDialog();
@@ -110,6 +117,9 @@ namespace CryptoTrackerApp
         {
             favouriteCurrenciesList = LoadFavourites();
             UpdateCryptoPriceAPI();
+            LoadSettings();
+            _timer.Interval = updateInterval * 1000;
+            _timer.Start();
         }
 
         private class PriceAPIResponse
@@ -145,14 +155,66 @@ namespace CryptoTrackerApp
 
         private void ChartButton_Click(object sender, EventArgs e)
         {
+            _timer.Stop();
             ChartForm chartForm = new ChartForm();
             chartForm.SetSelectedRow(dataGridView1.SelectedRows[0]);
             chartForm.ShowDialog();
+        }
+        private void ChartButton_FormClosing(object sender, EventArgs e)
+        {
+            _timer.Start();
         }
         private void MainMenuForm_FormClosing(object sender, FormClosingEventArgs e)
         {
             var confirmResult = MessageBox.Show("Are you sure you want to close the application?", "Close", MessageBoxButtons.YesNo);
             _ = (confirmResult == DialogResult.Yes) ? (e.Cancel = false) : (e.Cancel = true);
         }
+        private void SetupTimer()
+        {
+            _timer = new System.Timers.Timer(updateInterval*1000);
+            _timer.Elapsed += OnTimedEvent;
+            _timer.AutoReset = true;
+            _timer.Enabled = true;
+        }
+        private void OnTimedEvent(object sender, ElapsedEventArgs e)
+        {
+            if (dataGridView1.InvokeRequired)
+            {
+                dataGridView1.Invoke(new MethodInvoker(delegate
+                {
+                    UpdateCryptoPriceAPI();
+                }));
+            }
+            else
+            {
+                UpdateCryptoPriceAPI();
+            }
+        }
+        private void LoadSettings()
+        {
+            if (File.Exists("advancedSettings.json"))
+            {
+                try
+                {
+                    using (StreamReader r = new StreamReader("advancedSettings.json"))
+                    {
+                        string json = File.ReadAllText("advancedSettings.json");
+                        List<object> loadedSettings = JsonConvert.DeserializeObject<List<object>>(json);
+                        updateInterval = Convert.ToInt32(loadedSettings[0]);
+                    }
+
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine("Error reading or deserializing the file: " + ex.Message);
+                }
+
+            }
+            else
+            {
+                updateInterval = 120;
+            }
+        }
     }
+
 }
