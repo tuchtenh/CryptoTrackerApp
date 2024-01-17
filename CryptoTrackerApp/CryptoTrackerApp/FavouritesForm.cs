@@ -117,8 +117,7 @@ namespace CryptoTrackerApp
         private void AddToFavouritesButton_Click(object sender, EventArgs e)
         {
             AddSelectedRow(dataGridView1, dataGridView2);
-            listsChanged = true;
-            button1.Enabled = true;
+
         }
 
         private void AddSelectedRow(DataGridView source, DataGridView destination)
@@ -137,6 +136,8 @@ namespace CryptoTrackerApp
                         }
                     }
                 }
+                listsChanged = true;
+                button1.Enabled = true;
                 source.Refresh();
                 destination.Refresh();
             }
@@ -146,8 +147,6 @@ namespace CryptoTrackerApp
         private void RemoveFromFavouritesButton_Click(object sender, EventArgs e)
         {
             RemoveSelectedRow(dataGridView2, dataGridView1);
-            listsChanged = true;
-            button1.Enabled = true;
         }
 
         private void RemoveSelectedRow(DataGridView source, DataGridView destination)
@@ -166,6 +165,8 @@ namespace CryptoTrackerApp
                         }
                     }
                 }
+                listsChanged = true;
+                button1.Enabled = true;
                 source.Refresh();
                 destination.Refresh();
             }

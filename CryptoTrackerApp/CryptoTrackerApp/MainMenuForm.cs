@@ -88,7 +88,7 @@ namespace CryptoTrackerApp
             {
                 if (ex.Message.Contains("429"))
                 {
-                    MessageBox.Show("Too many request. Try again later");
+                    MessageBox.Show("Too many request. Try refreshing later");
                     Console.WriteLine("\nException Caught!\nMessage :{0} ", ex.Message);
                     return new Dictionary<string, PriceAPIResponse>();
                 }
