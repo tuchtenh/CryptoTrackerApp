@@ -1,4 +1,5 @@
-﻿using Newtonsoft.Json;
+﻿using DocumentFormat.OpenXml.Office2010.PowerPoint;
+using Newtonsoft.Json;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -11,7 +12,7 @@ using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
-using static CryptoTrackerApp.Form1;
+using static CryptoTrackerApp.MainMenuForm;
 using static CryptoTrackerApp.Program;
 
 namespace CryptoTrackerApp

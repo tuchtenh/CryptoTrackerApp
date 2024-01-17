@@ -16,7 +16,7 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.Windows.Forms.DataVisualization.Charting;
 using static ClosedXML.Excel.XLPredefinedFormat;
-using static CryptoTrackerApp.Form1;
+using static CryptoTrackerApp.MainMenuForm;
 using static CryptoTrackerApp.Program;
 
 namespace CryptoTrackerApp

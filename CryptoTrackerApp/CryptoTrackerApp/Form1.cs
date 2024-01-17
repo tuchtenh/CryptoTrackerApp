@@ -12,17 +12,17 @@ using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
-using static CryptoTrackerApp.Form1;
+using static CryptoTrackerApp.MainMenuForm;
 using static CryptoTrackerApp.Program;
 
 namespace CryptoTrackerApp
 {
-    public partial class Form1 : Form
+    public partial class MainMenuForm : Form
     {
         private List<CryptoCurrency> favouriteCurrenciesList = new List<CryptoCurrency>();
         private BindingList<CryptoPrice> currencyPriceList = new BindingList<CryptoPrice>();
 
-        public Form1()
+        public MainMenuForm()
         {
             InitializeComponent();
             this.FormClosing += new FormClosingEventHandler(Form1_FormClosing);
@@ -43,7 +43,7 @@ namespace CryptoTrackerApp
 
         private async void UpdateCryptoPriceAPI()
         {
-            //currencyPriceList = new List<CryptoPrice>();
+            currencyPriceList.Clear();
 
             Dictionary<string, PriceAPIResponse> cryptoResponse = new Dictionary<string, PriceAPIResponse>();
             cryptoResponse = await FetchCryptoPriceAPI();

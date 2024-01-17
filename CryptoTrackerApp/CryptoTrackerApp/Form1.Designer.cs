@@ -1,6 +1,6 @@
 ﻿namespace CryptoTrackerApp
 {
-    partial class Form1
+    partial class MainMenuForm
     {
         /// <summary>
         /// Required designer variable.
@@ -55,7 +55,7 @@
             this.button2.Name = "button2";
             this.button2.Size = new System.Drawing.Size(91, 42);
             this.button2.TabIndex = 1;
-            this.button2.Text = "Options";
+            this.button2.Text = "Favourites";
             this.button2.UseVisualStyleBackColor = true;
             this.button2.Click += new System.EventHandler(this.button2_Click);
             // 
@@ -87,7 +87,7 @@
             this.dataGridView1.Size = new System.Drawing.Size(684, 340);
             this.dataGridView1.TabIndex = 3;
             // 
-            // Form1
+            // MainMenuForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
@@ -98,7 +98,7 @@
             this.Controls.Add(this.button1);
             this.MaximumSize = new System.Drawing.Size(745, 1080);
             this.MinimumSize = new System.Drawing.Size(745, 513);
-            this.Name = "Form1";
+            this.Name = "MainMenuForm";
             this.Text = "CryptoTracker";
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).EndInit();
             this.ResumeLayout(false);
