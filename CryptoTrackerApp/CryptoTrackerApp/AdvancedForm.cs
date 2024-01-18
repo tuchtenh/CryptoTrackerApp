@@ -19,8 +19,8 @@ namespace CryptoTrackerApp
 {
     public partial class AdvancedForm : Form
     {
-        private int updateInterval;
-        private bool valuesChanged;
+        private int _updateInterval;
+        private bool _valuesChanged;
         public AdvancedForm()
         {
             InitializeComponent();
@@ -31,15 +31,15 @@ namespace CryptoTrackerApp
             trackBar1.TickFrequency = 60;
             trackBar1.LargeChange = 30;
             trackBar1.SmallChange = 30;
-            trackBar1.Value = updateInterval;
+            trackBar1.Value = _updateInterval;
             label2.Text = "" + trackBar1.Value + " Seconds";
 
-            valuesChanged = false;
+            _valuesChanged = false;
             button1.Enabled = false;
         }
         private void AdvancedForm_FormClosing(object sender, FormClosingEventArgs e)
         {
-            if (valuesChanged)
+            if (_valuesChanged)
             {
                 var confirmResult = MessageBox.Show("Are you sure you want to close without saving?", "Close", MessageBoxButtons.YesNo);
                 _ = (confirmResult == DialogResult.Yes) ? (e.Cancel = false) : (e.Cancel = true);
@@ -53,8 +53,8 @@ namespace CryptoTrackerApp
         private void trackBar1_Scroll(object sender, EventArgs e)
         {
             label2.Text = "" + trackBar1.Value + " Seconds";
-            updateInterval = trackBar1.Value;
-            valuesChanged = true;
+            _updateInterval = trackBar1.Value;
+            _valuesChanged = true;
             button1.Enabled = true;
         }
 
@@ -68,7 +68,7 @@ namespace CryptoTrackerApp
                     {
                         string json = File.ReadAllText("advancedSettings.json");
                         List<object> loadedSettings = JsonConvert.DeserializeObject<List<object>>(json);
-                        updateInterval = Convert.ToInt32(loadedSettings[0]);
+                        _updateInterval = Convert.ToInt32(loadedSettings[0]);
                     }
 
                 }
@@ -78,19 +78,19 @@ namespace CryptoTrackerApp
                 }
                 
             } else {
-                updateInterval = 120;
+                _updateInterval = 120;
             }
         }
 
         private void button1_Click(object sender, EventArgs e)
         {
-            if (valuesChanged)
+            if (_valuesChanged)
             {
                 List<object> saveSettings = new List<object>();
-                saveSettings.Add(updateInterval);
+                saveSettings.Add(_updateInterval);
                 string json = JsonConvert.SerializeObject(saveSettings, Formatting.Indented);
                 File.WriteAllText("advancedSettings.json", json);
-                valuesChanged = false;
+                _valuesChanged = false;
                 button1.Enabled = false;
             }
             MessageBox.Show("Data saved", "Saved", MessageBoxButtons.OK);

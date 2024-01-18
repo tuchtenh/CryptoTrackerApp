@@ -5,6 +5,8 @@ VisualStudioVersion = 17.8.34330.188
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CryptoTrackerApp", "CryptoTrackerApp\CryptoTrackerApp.csproj", "{20D67E7F-3E55-4D48-A524-E17F62309E27}"
 EndProject
+Project("{54435603-DBB4-11D2-8724-00A0C9A8B90C}") = "CryptoAppSetup", "CryptoAppSetup\CryptoAppSetup.vdproj", "{BC2050C8-86F7-44DE-895A-660C5C531118}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -15,6 +17,8 @@ Global
 		{20D67E7F-3E55-4D48-A524-E17F62309E27}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{20D67E7F-3E55-4D48-A524-E17F62309E27}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{20D67E7F-3E55-4D48-A524-E17F62309E27}.Release|Any CPU.Build.0 = Release|Any CPU
+		{BC2050C8-86F7-44DE-895A-660C5C531118}.Debug|Any CPU.ActiveCfg = Debug
+		{BC2050C8-86F7-44DE-895A-660C5C531118}.Release|Any CPU.ActiveCfg = Release
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

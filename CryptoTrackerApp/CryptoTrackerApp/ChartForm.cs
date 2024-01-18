@@ -23,8 +23,8 @@ namespace CryptoTrackerApp
 {
     public partial class ChartForm : Form
     {
-        JArray pricesArray = new JArray();
-        CryptoPrice cryptocurrencyData;
+        JArray _pricesArray = new JArray();
+        CryptoPrice _cryptocurrencyData;
 
         public ChartForm()
         {
@@ -42,7 +42,7 @@ namespace CryptoTrackerApp
 
         public void SetSelectedRow(DataGridViewRow cryptocurrencyData)
         {
-            this.cryptocurrencyData = cryptocurrencyData.DataBoundItem as CryptoPrice;
+            this._cryptocurrencyData = cryptocurrencyData.DataBoundItem as CryptoPrice;
         }
 
         private async Task<JArray> FetchPriceFromAPIAsync(string currencyId, int dayHistory)
@@ -72,9 +72,9 @@ namespace CryptoTrackerApp
         private async void DrawChart(string currencyId, int dayHistory)
         {
             chart1.Series[0].Points.Clear();
-            pricesArray = await FetchPriceFromAPIAsync(currencyId, dayHistory);
+            _pricesArray = await FetchPriceFromAPIAsync(currencyId, dayHistory);
 
-            foreach (JToken token in pricesArray)
+            foreach (JToken token in _pricesArray)
             {
                 long timestamp = (long)token[0];
                 double price = (double)token[1];
@@ -143,14 +143,14 @@ namespace CryptoTrackerApp
         private void Draw24HourChart()
         {
             chart1.ChartAreas[0].AxisY.Name = "USD";
-            chart1.Titles[0].Text = $"24h {cryptocurrencyData.Name} price history in USD";
+            chart1.Titles[0].Text = $"24h {_cryptocurrencyData.Name} price history in USD";
             chart1.Titles[1].Text = "USD";
             chart1.Titles[2].Text = "Time";
-            chart1.Series[0].LegendText = $"{cryptocurrencyData.Name}";
+            chart1.Series[0].LegendText = $"{_cryptocurrencyData.Name}";
             chart1.ChartAreas[0].AxisX.Interval = 1;
             chart1.ChartAreas[0].AxisX.IntervalType = DateTimeIntervalType.Hours;
             chart1.ChartAreas[0].AxisX.LabelStyle.Format = "HH:mm:ss";
-            DrawChart(cryptocurrencyData.Id, 1);
+            DrawChart(_cryptocurrencyData.Id, 1);
         }
         private void Day1Button_Click(object sender, EventArgs e)
         {
@@ -184,12 +184,12 @@ namespace CryptoTrackerApp
 
         private void ChartSettings(int days, double interval, string timeFormat = "dd/MM")
         {
-            chart1.Titles[0].Text = $"{days} Day {cryptocurrencyData.Name} price history in USD";
-            chart1.Series[0].LegendText = $"{cryptocurrencyData.Name}";
+            chart1.Titles[0].Text = $"{days} Day {_cryptocurrencyData.Name} price history in USD";
+            chart1.Series[0].LegendText = $"{_cryptocurrencyData.Name}";
             chart1.ChartAreas[0].AxisX.Interval = interval;
             chart1.ChartAreas[0].AxisX.IntervalType = DateTimeIntervalType.Days;
             chart1.ChartAreas[0].AxisX.LabelStyle.Format = "dd/MM";
-            DrawChart(cryptocurrencyData.Id, days);
+            DrawChart(_cryptocurrencyData.Id, days);
         }
     }
 }

@@ -20,8 +20,8 @@ namespace CryptoTrackerApp
 {
     public partial class MainMenuForm : Form
     {
-        private List<CryptoCurrency> favouriteCurrenciesList = new List<CryptoCurrency>();
-        private BindingList<CryptoPrice> currencyPriceList = new BindingList<CryptoPrice>();
+        private List<CryptoCurrency> _favouriteCurrenciesList = new List<CryptoCurrency>();
+        private BindingList<CryptoPrice> _currencyPriceList = new BindingList<CryptoPrice>();
         private System.Timers.Timer _timer;
         private int updateInterval;
 
@@ -29,14 +29,14 @@ namespace CryptoTrackerApp
         {
             InitializeComponent();
             this.FormClosing += new FormClosingEventHandler(MainMenuForm_FormClosing);
-            favouriteCurrenciesList = LoadFavourites();
+            _favouriteCurrenciesList = LoadFavourites();
             dataGridView1.AllowUserToAddRows = false;
-            dataGridView1.DataSource = currencyPriceList;
+            dataGridView1.DataSource = _currencyPriceList;
             LoadSettings();
         }
         private void MainMenuForm_Load(object sender, EventArgs e)
         {
-            if (favouriteCurrenciesList.Count > 0)
+            if (_favouriteCurrenciesList.Count > 0)
             {
                 UpdateCryptoPriceAPI();
             }
@@ -52,12 +52,12 @@ namespace CryptoTrackerApp
 
         private async void UpdateCryptoPriceAPI()
         {
-            currencyPriceList.Clear();
+            _currencyPriceList.Clear();
 
             Dictionary<string, PriceAPIResponse> cryptoResponse = new Dictionary<string, PriceAPIResponse>();
             cryptoResponse = await FetchCryptoPriceAPI();
 
-            foreach (var favCurrency in favouriteCurrenciesList)
+            foreach (var favCurrency in _favouriteCurrenciesList)
             {
                 CryptoPrice pricedCoin = new CryptoPrice
                 {
@@ -70,9 +70,9 @@ namespace CryptoTrackerApp
                     pricedCoin.Price = priceApiResponse.Price;
                     pricedCoin.PercentageChange24Hr = priceApiResponse.Change;
                 }
-                if (!currencyPriceList.Any(c => c.Id == pricedCoin.Id))
+                if (!_currencyPriceList.Any(c => c.Id == pricedCoin.Id))
                 {
-                    currencyPriceList.Add(pricedCoin);
+                    _currencyPriceList.Add(pricedCoin);
                 }
                 
             }
@@ -81,7 +81,7 @@ namespace CryptoTrackerApp
 
         private async Task<Dictionary<string, PriceAPIResponse>> FetchCryptoPriceAPI()
         {
-            string ids = string.Join("%2C", favouriteCurrenciesList.Select(c => c.Id));
+            string ids = string.Join("%2C", _favouriteCurrenciesList.Select(c => c.Id));
             string currency = "usd";
             string url = $"simple/price?ids={ids}&vs_currencies={currency}&include_24hr_change=true&precision=8";
             try
@@ -115,7 +115,7 @@ namespace CryptoTrackerApp
         }
         private void FavouritesForm_FormClosing(object sender, FormClosingEventArgs e)
         {
-            favouriteCurrenciesList = LoadFavourites();
+            _favouriteCurrenciesList = LoadFavourites();
             UpdateCryptoPriceAPI();
             LoadSettings();
             _timer.Interval = updateInterval * 1000;

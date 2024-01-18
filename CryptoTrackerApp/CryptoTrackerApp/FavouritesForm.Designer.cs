@@ -155,7 +155,7 @@ namespace CryptoTrackerApp
             this.button6.UseVisualStyleBackColor = true;
             this.button6.Click += new System.EventHandler(this.AdvancedButton_Click);
             // 
-            // OptionsForm
+            // FavouritesForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
@@ -172,7 +172,7 @@ namespace CryptoTrackerApp
             this.Controls.Add(this.button1);
             this.MaximumSize = new System.Drawing.Size(862, 1080);
             this.MinimumSize = new System.Drawing.Size(862, 489);
-            this.Name = "OptionsForm";
+            this.Name = "FavouritesForm";
             this.Text = "OptionsForm";
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView2)).EndInit();

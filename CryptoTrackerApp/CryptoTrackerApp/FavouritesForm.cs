@@ -19,28 +19,28 @@ namespace CryptoTrackerApp
 {
     public partial class FavouritesForm : Form
     {
-        private BindingList<CryptoCurrency> allCurrenciesList = new BindingList<CryptoCurrency>();
-        private BindingList<CryptoCurrency> favouriteCurrenciesList = new BindingList<CryptoCurrency>();
-        private bool listsChanged;
+        private BindingList<CryptoCurrency> _allCurrenciesList = new BindingList<CryptoCurrency>();
+        private BindingList<CryptoCurrency> _favouriteCurrenciesList = new BindingList<CryptoCurrency>();
+        private bool _listsChanged;
 
         public FavouritesForm()
         {
             InitializeComponent();
             this.FormClosing += new FormClosingEventHandler(OptionsForm_FormClosing);
-            allCurrenciesList = LoadList("allCurrenciesList.json", allCurrenciesList);
-            favouriteCurrenciesList = LoadList("favouriteCurrenciesList.json", favouriteCurrenciesList);
+            _allCurrenciesList = LoadList("allCurrenciesList.json", _allCurrenciesList);
+            _favouriteCurrenciesList = LoadList("favouriteCurrenciesList.json", _favouriteCurrenciesList);
             dataGridView1.AllowUserToAddRows = false;
             dataGridView2.AllowUserToAddRows = false;
-            dataGridView1.DataSource = allCurrenciesList;
-            dataGridView2.DataSource = favouriteCurrenciesList;
-            listsChanged = false;
+            dataGridView1.DataSource = _allCurrenciesList;
+            dataGridView2.DataSource = _favouriteCurrenciesList;
+            _listsChanged = false;
             button1.Enabled = false;
         }
 
         private async void LoadDataToDataGridView()
         {
-            allCurrenciesList = await FetchCryptoData();
-            dataGridView1.DataSource = allCurrenciesList;
+            _allCurrenciesList = await FetchCryptoData();
+            dataGridView1.DataSource = _allCurrenciesList;
         }
 
         private async Task<BindingList<CryptoCurrency>> FetchCryptoData()
@@ -69,12 +69,12 @@ namespace CryptoTrackerApp
 
         private void SaveButton_Click(object sender, EventArgs e)
         {
-            if (listsChanged) {
-                string json = JsonConvert.SerializeObject(favouriteCurrenciesList, Formatting.Indented);
+            if (_listsChanged) {
+                string json = JsonConvert.SerializeObject(_favouriteCurrenciesList, Formatting.Indented);
                 File.WriteAllText("favouriteCurrenciesList.json", json);
-                json = JsonConvert.SerializeObject(allCurrenciesList, Formatting.Indented);
+                json = JsonConvert.SerializeObject(_allCurrenciesList, Formatting.Indented);
                 File.WriteAllText("allCurrenciesList.json", json);
-                listsChanged = false;
+                _listsChanged = false;
                 button1.Enabled = false;
             }
             MessageBox.Show("Data saved", "Saved", MessageBoxButtons.OK);
@@ -87,7 +87,7 @@ namespace CryptoTrackerApp
 
         private void OptionsForm_FormClosing(object sender, FormClosingEventArgs e)
         {
-            if (listsChanged)
+            if (_listsChanged)
             {
                 var confirmResult = MessageBox.Show("Are you sure you want to close without saving?", "Close", MessageBoxButtons.YesNo);
                 _ = (confirmResult == DialogResult.Yes) ? (e.Cancel = false) : (e.Cancel = true);
@@ -105,7 +105,7 @@ namespace CryptoTrackerApp
             if (confirmResult == DialogResult.OK)
             {
                 LoadDataToDataGridView();
-                listsChanged = true;
+                _listsChanged = true;
                 button1.Enabled = true;
             }
         }
@@ -126,14 +126,14 @@ namespace CryptoTrackerApp
                     CryptoCurrency crypto = row.DataBoundItem as CryptoCurrency;
                     if (crypto != null)
                     {
-                        allCurrenciesList.Remove(crypto);
-                        if (!favouriteCurrenciesList.Any(c => c.Id == crypto.Id))
+                        _allCurrenciesList.Remove(crypto);
+                        if (!_favouriteCurrenciesList.Any(c => c.Id == crypto.Id))
                         {
-                            favouriteCurrenciesList.Add(crypto);
+                            _favouriteCurrenciesList.Add(crypto);
                         }
                     }
                 }
-                listsChanged = true;
+                _listsChanged = true;
                 button1.Enabled = true;
                 source.Refresh();
                 destination.Refresh();
@@ -155,14 +155,14 @@ namespace CryptoTrackerApp
                     CryptoCurrency crypto = row.DataBoundItem as CryptoCurrency;
                     if (crypto != null)
                     {
-                        favouriteCurrenciesList.Remove(crypto);
-                        if (!allCurrenciesList.Any(c => c.Id == crypto.Id))
+                        _favouriteCurrenciesList.Remove(crypto);
+                        if (!_allCurrenciesList.Any(c => c.Id == crypto.Id))
                         {
-                            allCurrenciesList.Add(crypto);
+                            _allCurrenciesList.Add(crypto);
                         }
                     }
                 }
-                listsChanged = true;
+                _listsChanged = true;
                 button1.Enabled = true;
                 source.Refresh();
                 destination.Refresh();
@@ -202,5 +202,6 @@ namespace CryptoTrackerApp
         {
             Console.WriteLine("Exit Advamced");
         }
+
     }
 }
