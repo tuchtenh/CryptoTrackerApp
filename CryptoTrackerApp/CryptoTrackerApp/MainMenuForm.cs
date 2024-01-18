@@ -23,7 +23,7 @@ namespace CryptoTrackerApp
         private List<CryptoCurrency> favouriteCurrenciesList = new List<CryptoCurrency>();
         private BindingList<CryptoPrice> currencyPriceList = new BindingList<CryptoPrice>();
         private System.Timers.Timer _timer;
-        private int updateInterval = 120 * 1000;
+        private int updateInterval;
 
         public MainMenuForm()
         {
@@ -169,6 +169,12 @@ namespace CryptoTrackerApp
             var confirmResult = MessageBox.Show("Are you sure you want to close the application?", "Close", MessageBoxButtons.YesNo);
             _ = (confirmResult == DialogResult.Yes) ? (e.Cancel = false) : (e.Cancel = true);
         }
+
+        private void Exit_Click(object sender, EventArgs e)
+        {
+            this.Close();
+        }
+
         private void SetupTimer()
         {
             _timer = new System.Timers.Timer(updateInterval*1000);
@@ -215,6 +221,7 @@ namespace CryptoTrackerApp
                 updateInterval = 120;
             }
         }
+
     }
 
 }
